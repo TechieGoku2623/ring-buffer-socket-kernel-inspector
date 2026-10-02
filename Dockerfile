@@ -1,19 +1,13 @@
-# ring-buffer-socket-kernel-inspector
 FROM python:3.12-slim AS builder
 
 WORKDIR /build
-COPY requirements.txt .
+COPY pyproject.toml README.md LICENSE ./
 COPY src ./src
-RUN pip install --no-cache-dir -r requirements.txt \
-    && python -m compileall -q src
+RUN pip install --no-cache-dir --prefix=/install .
 
 FROM python:3.12-slim
 
-WORKDIR /app
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-COPY --from=builder /build/src ./src
-COPY --from=builder /build/requirements.txt ./requirements.txt
 RUN useradd --uid 10001 --no-create-home --shell /usr/sbin/nologin appuser
+COPY --from=builder /install /usr/local
 USER 10001
-ENTRYPOINT ["python", "src/main.py"]
+ENTRYPOINT ["python", "-m", "ring_buffer_socket_kernel_inspector"]
