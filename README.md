@@ -13,6 +13,14 @@
 | **Website** | https://github.com/TechieGoku2623/ring-buffer-socket-kernel-inspector |
 | **Topics** | `python` `asyncio` `cybersecurity` `observability` `ring-buffer` `sockets` |
 
+## The problem this solves
+
+Drops and a stalled consumer are how a socket path fails under load. Inspecting that failure by opening the wire is the wrong permission and the wrong tool.
+
+Ring Buffer Socket Kernel Inspector models the path as a power-of-two byte ring with mask indexing, tracks drops with an exponentially weighted moving average, and flags a stall when the consumer stops draining. The report is depth, drop count, the smoothed drop rate, and a stall bit, on `sec.sock.ring`.
+
+It is a userspace observability model of buffer health. The repository contains no packet crafting and no kernel write. The posture is defensive.
+
 ## Walkthrough
 
 ### How it works
