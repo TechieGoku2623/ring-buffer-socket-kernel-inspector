@@ -13,6 +13,14 @@
 | **Website** | https://github.com/TechieGoku2623/ring-buffer-socket-kernel-inspector |
 | **Topics** | `python` `asyncio` `cybersecurity` `observability` `ring-buffer` `sockets` |
 
+## Watch the demo
+
+<p align="center">
+  <img src="docs/demo.gif" alt="Ring Buffer Socket Kernel Inspector dashboard walkthrough" width="920"/>
+</p>
+
+Play the video: [docs/watch.html](docs/watch.html)
+
 ## The problem this solves
 
 Drops and a stalled consumer are how a socket path fails under load. Inspecting that failure by opening the wire is the wrong permission and the wrong tool.
