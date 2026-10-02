@@ -2,6 +2,11 @@
 
 A high-throughput, low-latency asynchronous engine engineered to resolve local socket-buffer occupancy risk by tracking a power-of-two ring of telemetry records and flagging near-capacity, rising drops, and a stalled consumer.
 
+Website: https://github.com/TechieGoku2623/ring-buffer-socket-kernel-inspector
+
+Topics: `python` `asyncio` `cybersecurity` `observability` `ring-buffer` `sockets`
+
+
 ## 🏗️ Systems Architecture & Event Topology
 
 `RingBufferSocketKernelInspector` stores caller-supplied occupancy samples in a `bytearray` whose length is `capacity * record_size`. `capacity` is a power of two and `mask = capacity - 1`. `run(records)` publishes the batch under an `asyncio.Lock` by writing at `tail & mask` and incrementing `tail`. `consume()` reads at `head & mask` and increments `head`. Those index updates are the hot path. The ring is not a `deque`.
@@ -11,6 +16,8 @@ Each record is `struct` format `<HIIIIHI`: length, `queue_depth`, `drops`, `rmem
 The returned dict is JSON-serializable: `depth`, `drops`, `ewma_drop`, `stalled`, and `rejected`. Kafka topic `sec.sock.ring` is the metric name. The bytearray stays in this process. The module does not open a socket, craft a packet, or request `CAP_NET_RAW`.
 
 ## 📊 Core Visual Walkthrough & Engine Pipeline Flow
+
+![Terminal walkthrough](docs/assets/terminal-walkthrough.gif)
 
 ```
 caller-supplied occupancy sample
